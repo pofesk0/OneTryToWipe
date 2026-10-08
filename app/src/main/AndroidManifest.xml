@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools">
+
+ <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+ <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+ <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
+ <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:label="OneTryToWipe"
+		android:icon="@drawable/towipe"
+		android:allowBackup="false"
+		android:debuggable="false"
+		android:requestLegacyExternalStorage="false"
+        android:fullBackupContent="false"
+		android:extractNativeLibs="false"
+        android:theme="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen">
+
+		<activity-alias
+			android:name=".LauncherAlias"
+			android:enabled="true"
+			android:targetActivity=".HelloActivity"
+			android:exported="true"> 
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>	
+		</activity-alias>
+
+		<activity-alias
+			android:name=".LauncherFinishAlias"
+			android:enabled="true"
+			android:targetActivity=".WorkSetupActivity"
+			android:exported="true"> 
+			<intent-filter>           
+				<action android:name="android.app.action.PROVISIONING_SUCCESSFUL" />        
+				<category android:name="android.intent.category.DEFAULT" />        
+			</intent-filter>
+		</activity-alias>
+
+		<activity-alias
+			android:name=".LauncherWorkAlias"
+			android:enabled="false"
+			android:targetActivity=".WorkSetupActivity"
+			android:exported="true"> 
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>	
+		</activity-alias>
+	
+		 <activity android:name=".HelloActivity"
+            android:exported="false"
+		    android:enabled="true"
+		    android:screenOrientation="portrait"
+		    android:excludeFromRecents="true">		
+        </activity>
+		
+		 <activity android:name=".MainActivity"
+            android:exported="false"
+		    android:enabled="true"			
+		    android:screenOrientation="portrait"
+		    android:excludeFromRecents="true">		
+        </activity>
+
+		 <activity android:name=".WorkSetupActivity"
+            android:exported="false"
+		    android:enabled="true"	
+			android:taskAffinity=""
+		    android:screenOrientation="portrait"
+		    android:excludeFromRecents="true">
+        </activity>
+			
+		<service
+			android:name=".WatcherService"
+			android:permission="android.permission.BIND_DEVICE_ADMIN"
+			android:foregroundServiceType="systemExempted" 
+			android:stopWithTask="false"	
+			android:exported="true">
+			<intent-filter>
+				<action android:name="android.app.action.DEVICE_ADMIN_SERVICE" />
+			</intent-filter>
+		</service>
+
+		 <service
+            android:name=".HelperService"
+			android:process=":serv1"
+            android:exported="true"
+			android:stopWithTask="false" 
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+					
+        <receiver android:name=".MyDeviceAdminReceiver"            
+            android:permission="android.permission.BIND_DEVICE_ADMIN"
+            android:exported="true">
+            <meta-data android:name="android.app.device_admin" 
+			android:resource="@xml/device_admin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+				<action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
+				<action android:name="android.app.action.ACTION_PASSWORD_FAILED" />
+				<action android:name="android.app.action.ACTION_PASSWORD_CHANGED" />
+                <action android:name="android.app.action.PROFILE_PROVISIONING_COMPLETE" />
+            </intent-filter>
+        </receiver>
+
+		<receiver android:name=".BootReceiver" 
+			android:exported="false"
+			android:enabled="true">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+		</receiver>
+
+    </application>
+</manifest>
