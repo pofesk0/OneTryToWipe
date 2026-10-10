@@ -12,9 +12,16 @@ public class WatcherService extends DeviceAdminService {
     
 	private BroadcastReceiver receiver;    
 	
-	private void startEnforcedService() {
+	private void startForegroundService() {
 	Context context = this;
     NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+	Intent intent = new Intent(context, DestroyActivity.class); 
+	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+	DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);    
+	if (dpm.getPermissionGrantState(new ComponentName(this, MyDeviceAdminReceiver.class), context.getPackageName(), android.Manifest.permission.POST_NOTIFICATIONS) != DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED) dpm.setPermissionGrantState(new ComponentName(this, MyDeviceAdminReceiver.class), getPackageName(), android.Manifest.permission.POST_NOTIFICATIONS, DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED);	
 		
     List<NotificationChannel> channels = nm.getNotificationChannels();
     String activeId = null;
@@ -38,11 +45,14 @@ public class WatcherService extends DeviceAdminService {
 		nm.createNotificationChannel(nch);
     }
 
+	boolean isRu = Locale.getDefault().getLanguage().equals("ru");
+
     Notification notif = new Notification.Builder(context, activeId)
-            .setContentTitle("Work Profile Started")
-            .setContentText("")
+            .setContentTitle(isRu ? "Рабочий профиль запущен" : "Work Profile Started")
+            .setContentText(isRu ? "Нажмите чтобы удалить" : "Tap to delete it")
             .setSmallIcon(android.R.drawable.ic_lock_lock)
             .setOngoing(true)
+		    .setContentIntent(pendingIntent)
 		    .setVisibility(Notification.VISIBILITY_SECRET)
 	        .setAutoCancel(false)
             .build();
@@ -74,7 +84,7 @@ public class WatcherService extends DeviceAdminService {
         super.onCreate();
 		
 		forceBindAndStart();		        
-		startEnforcedService();
+		startForegroundService();
         
        if (receiver == null) {
             receiver = new BroadcastReceiver() {
@@ -102,7 +112,7 @@ public class WatcherService extends DeviceAdminService {
 
 	@Override
     public int onStartCommand(Intent intent, int flags, int startId) {    
-	startEnforcedService();
+	startForegroundService();
 	return START_STICKY;
     }
 
