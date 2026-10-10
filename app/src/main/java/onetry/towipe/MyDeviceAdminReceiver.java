@@ -64,7 +64,7 @@ public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
 				
 		dpm.setPasswordQuality(admin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
 		dpm.setPasswordMinimumLength(admin, 12);
-		dpm.setKeyguardDisabledFeatures(admin, DevicePolicyManager.KEYGUARD_DISABLE_BIOMETRICS | DevicePolicyManager.KEYGUARD_DISABLE_TRUST_AGENTS);																						    								
+		dpm.setKeyguardDisabledFeatures(admin, DevicePolicyManager.KEYGUARD_DISABLE_FEATURES_ALL);																						    								
                 
 		dpm.setMaximumFailedPasswordsForWipe(admin, 1);
 		dpm.setProfileEnabled(admin);
