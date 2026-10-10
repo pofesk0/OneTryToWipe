@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools">
 
+ <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
  <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
@@ -10,7 +11,7 @@
     <application
         android:label="OneTryToWipe"
 		android:icon="@drawable/towipe"
-		android:allowBackup="false"
+		android:allowBackup="false"		
 		android:debuggable="false"
 		android:requestLegacyExternalStorage="false"
         android:fullBackupContent="false"
@@ -54,23 +55,24 @@
             android:exported="false"
 		    android:enabled="true"
 		    android:screenOrientation="portrait"
-		    android:excludeFromRecents="true">		
-        </activity>
+		    android:excludeFromRecents="true"/>		
 		
 		 <activity android:name=".MainActivity"
             android:exported="false"
 		    android:enabled="true"			
 		    android:screenOrientation="portrait"
-		    android:excludeFromRecents="true">		
-        </activity>
+		    android:excludeFromRecents="true"/>		
 
 		 <activity android:name=".WorkSetupActivity"
             android:exported="false"
 		    android:enabled="true"	
 			android:taskAffinity=""
 		    android:screenOrientation="portrait"
-		    android:excludeFromRecents="true">
-        </activity>
+		    android:excludeFromRecents="true"/>        
+
+		<activity android:name=".DestroyActivity"
+            android:exported="false"			
+			android:excludeFromRecents="true"/>        
 			
 		<service
 			android:name=".WatcherService"
@@ -82,7 +84,7 @@
 				<action android:name="android.app.action.DEVICE_ADMIN_SERVICE" />
 			</intent-filter>
 		</service>
-
+		
 		 <service
             android:name=".HelperService"
 			android:process=":serv1"
