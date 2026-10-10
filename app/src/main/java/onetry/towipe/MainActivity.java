@@ -67,10 +67,10 @@ public class MainActivity extends Activity {
 
     tv.setText(isRussian
             ? "Привет!\n" +
-              "Здесь вы можете создать рабочий профиль\n" +
+              "Создайте рабочий профиль который будет удален при первой неверной попытке его разблокировки\n" +
               "Просто нажмите START >\n"
             : "Hello!\n" +
-              "Here you can create a work profile\n" +
+              "Create a work profile that will be deleted on first incorrect attempt to unlock it\n" +
               "Simply press START >\n");  
 	
 	scroll.addView(tv);
