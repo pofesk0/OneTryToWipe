@@ -135,7 +135,7 @@ public class WorkSetupActivity extends Activity {
         GradientDrawable shape = new GradientDrawable();
 
         shape.setShape(GradientDrawable.RECTANGLE);
-        shape.setColor(Color.parseColor("#34495e"));
+        shape.setColor(Color.parseColor("#d32f2f"));
         shape.setCornerRadius(6f);
 
         button.setBackground(shape);
